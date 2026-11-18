@@ -1,0 +1,19 @@
+name: Construir JARVIS
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt pyinstaller
+      - run: pyinstaller --onefile --noconsole --name JARVIS --collect-all speech_recognition --collect-all edge_tts jarvis.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JARVIS-windows
+          path: dist/JARVIS.exe
